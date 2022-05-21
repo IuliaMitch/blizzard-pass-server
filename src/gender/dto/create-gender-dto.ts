@@ -1,3 +1,3 @@
-export class CreateTableDto {
+export class CreateGenderDto {
     name: string;
   }

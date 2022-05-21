@@ -3,17 +3,24 @@ https://docs.nestjs.com/providers#services
 */
 
 import { Injectable } from '@nestjs/common';
-import { CreateTableDto } from './dto/create-gender-dto';
+import { CreateGenderDto } from './dto/create-gender-dto';
+import { Gender } from './entities/gender.entity';
 
 @Injectable()
 export class GenderService {
+
+    genders: Gender[] = []
 
     findAll() {
         return 'Buscar todas as mesas'
     }
 
-    create(createTableDto: CreateTableDto) {
-        return 'Criar uma mesa' + JSON.stringify(createTableDto)
+    create(createGenderDto: CreateGenderDto) {
+        const gender: Gender = {id: 'random_id', ...createGenderDto}
+        
+        this.genders.push(gender)
+        
+        return gender;
     }
 
 }

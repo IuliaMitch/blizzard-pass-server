@@ -19,8 +19,8 @@ export class GenderController {
     }
 
     @Post()
-    create(@Body() createGenderDto: CreateGenderDto) {
-        return this.genderService.create(createGenderDto);
+    create(@Body() dto: CreateGenderDto) {
+        return this.genderService.create(dto);
 
     }
 

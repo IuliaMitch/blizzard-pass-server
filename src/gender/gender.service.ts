@@ -3,6 +3,7 @@ https://docs.nestjs.com/providers#services
 */
 
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateGenderDto } from './dto/create-gender.dto';
 import { Gender } from './entities/gender.entity';
 
@@ -11,17 +12,18 @@ export class GenderService {
 
     genders: Gender[] = []
 
+    constructor(private readonly prisma: PrismaService) {}
+
     findAll() {
 
-        return this.genders
+        return this.prisma.gender.findMany();
     }
 
-    create(createGenderDto: CreateGenderDto) {
-        const gender: Gender = {id: 'random_id', ...createGenderDto}
+    create(dto: CreateGenderDto) {
+        const data: Gender = { ...dto }
         
-        this.genders.push(gender)
         
-        return gender;
+        return this.prisma.gender.create({ data }) ;
     }
 
 }

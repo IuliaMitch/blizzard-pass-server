@@ -19,7 +19,7 @@ import { UpdateGenderDto } from './dto/update-gender.dto';
 import { Gender } from './entities/gender.entity';
 import { GenderService } from './gender.service';
 
-@ApiTags()
+@ApiTags('gender')
 @Controller('gender')
 export class GenderController {
   constructor(private genderService: GenderService) {}

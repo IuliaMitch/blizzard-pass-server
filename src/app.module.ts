@@ -6,10 +6,12 @@ import { PrismaModule } from './prisma/prisma.module';
 import { GenderController } from './gender/gender.controller';
 import { GenderService } from './gender/gender.service';
 import { GamesModule } from './games/games.module';
+import { GamesController } from './games/games.controller';
+import { GamesService } from './games/games.service';
 
 @Module({
   imports: [GenderModule, PrismaModule, GamesModule],
-  controllers: [AppController, GenderController],
-  providers: [AppService, GenderService],
+  controllers: [AppController, GenderController, GamesController],
+  providers: [AppService, GenderService, GamesService],
 })
 export class AppModule {}

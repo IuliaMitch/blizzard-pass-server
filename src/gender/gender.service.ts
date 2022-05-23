@@ -2,7 +2,7 @@
 https://docs.nestjs.com/providers#services
 */
 
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateGenderDto } from './dto/create-gender.dto';
 import { UpdateGenderDto } from './dto/update-gender.dto';
@@ -35,10 +35,10 @@ export class GenderService {
     return this.findById(id);
   }
 
-  create(dto: CreateGenderDto): Promise<Gender> {
+  async create(dto: CreateGenderDto): Promise<Gender> {
     const data: Gender = { ...dto };
 
-    return this.prisma.gender.create({ data });
+    return this.prisma.gender.create({ data }).catch(this.handleError);
   }
 
   async update(id: string, dto: UpdateGenderDto): Promise<Gender> {
@@ -48,7 +48,7 @@ export class GenderService {
     return this.prisma.gender.update({
       where: { id },
       data,
-    });
+    }).catch(this.handleError);
   }
 
   async delete(id: string) {
@@ -59,5 +59,11 @@ export class GenderService {
         id,
       },
     });
+  }
+
+  handleError(error: Error): undefined {
+      const errorLines = error.message?.split('\n')
+      const lastErrorLine = errorLines[errorLines.length -1]?.trim()
+      throw new UnprocessableEntityException(lastErrorLine || 'Ocorreu algum erro ao executar a operação')
   }
 }

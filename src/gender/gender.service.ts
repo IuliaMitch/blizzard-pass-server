@@ -2,7 +2,11 @@
 https://docs.nestjs.com/providers#services
 */
 
-import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateGenderDto } from './dto/create-gender.dto';
 import { UpdateGenderDto } from './dto/update-gender.dto';
@@ -26,7 +30,7 @@ export class GenderService {
     });
 
     if (!record) {
-        throw new NotFoundException(`Registro com o ID '${id}' não encontrado`)
+      throw new NotFoundException(`Registro com o ID '${id}' não encontrado`);
     }
     return record;
   }
@@ -45,10 +49,12 @@ export class GenderService {
     await this.findById(id);
     const data: Partial<Gender> = { ...dto };
 
-    return this.prisma.gender.update({
-      where: { id },
-      data,
-    }).catch(this.handleError);
+    return this.prisma.gender
+      .update({
+        where: { id },
+        data,
+      })
+      .catch(this.handleError);
   }
 
   async delete(id: string) {
@@ -62,8 +68,10 @@ export class GenderService {
   }
 
   handleError(error: Error): undefined {
-      const errorLines = error.message?.split('\n')
-      const lastErrorLine = errorLines[errorLines.length -1]?.trim()
-      throw new UnprocessableEntityException(lastErrorLine || 'Ocorreu algum erro ao executar a operação')
+    const errorLines = error.message?.split('\n');
+    const lastErrorLine = errorLines[errorLines.length - 1]?.trim();
+    throw new UnprocessableEntityException(
+      lastErrorLine || 'Ocorreu algum erro ao executar a operação',
+    );
   }
 }

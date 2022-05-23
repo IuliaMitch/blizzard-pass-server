@@ -1,5 +1,5 @@
 import { ApiOperation, ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsPositive, IsString, Max, Min } from "class-validator";
+import { IsNumber, IsPositive, IsString, IsUrl, Max, Min } from "class-validator";
 
 export class CreateGameDto {
   @IsString()
@@ -27,21 +27,23 @@ export class CreateGameDto {
   year: number;
 
   @IsPositive()
-  @IsNumber()
+  @IsNumber({
+    maxDecimalPlaces: 1
+  })
   @ApiProperty({
     description: 'Pontuação do Game secundo IMB',
     example: 3.5
   })
   imdbScore: number;
 
-  @IsString()
+  @IsUrl()
   @ApiProperty({
     description: 'Link do trailer do Youtube',
     example: 'https://www.youtube.com/watch?v=aaCZGs0PeLs&ab_channel=Pedroca'
   })
   trailerYoutubeUrl: string;
 
-  @IsString()
+  @IsUrl()
   @ApiProperty({
     description: "Link de uma Gameplay no Youtube",
     example: 'https://www.youtube.com/watch?v=PCQ6_D9_KLc&ab_channel=Livesdoalanzoka'
@@ -49,7 +51,7 @@ export class CreateGameDto {
   })
   gameplayYoutubeUrl: string;
 
-  @IsString()
+  @IsUrl()
   @ApiProperty({
     description: 'Poster do Game',
     example: "https://upload.wikimedia.org/wikipedia/pt/1/12/DiabloIIIcover.jpg"

@@ -14,7 +14,7 @@ async function bootstrap() {
   .setDescription('Aplicação para gestão de generos de um GamePass')
   .setVersion('1.0.0')
   .addTag('status')
-  .addTag('Gender')
+  .addTag('gender')
   .build()
 
   const document = SwaggerModule.createDocument(app, config)

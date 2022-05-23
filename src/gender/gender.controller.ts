@@ -2,7 +2,7 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateGenderDto } from './dto/create-gender.dto';
 import { UpdateGenderDto } from './dto/update-gender.dto';
@@ -46,6 +46,15 @@ export class GenderController {
     })
     update(@Param('id') id: string, @Body() dto: UpdateGenderDto): Promise<Gender> {
         return this.genderService.update(id, dto)
+    }
+
+    @Delete(':id')
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @ApiOperation({
+        summary: 'Deletar um genero por ID'
+    })
+    delete(@Param('id') id: string) {
+        this.genderService.delete(id)
     }
 
 }

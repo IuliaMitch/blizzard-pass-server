@@ -10,7 +10,7 @@ import { Gender } from './entities/gender.entity';
 
 @Injectable()
 export class GenderService {
-
+  
     genders: Gender[] = []
 
     constructor(private readonly prisma: PrismaService) {}
@@ -42,5 +42,14 @@ export class GenderService {
            data,
        })
     }
+
+    async delete(id: string) {
+        return await this.prisma.gender.delete({
+            where: {
+                id,
+            }
+        })
+    }
+
 
 }

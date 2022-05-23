@@ -2,9 +2,10 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateGenderDto } from './dto/create-gender.dto';
+import { Gender } from './entities/gender.entity';
 import { GenderService } from './gender.service';
 
 @ApiTags()
@@ -13,13 +14,27 @@ export class GenderController {
     constructor(private genderService: GenderService) {}
 
     @Get()
-    findAll() {
+    @ApiOperation({
+        summary: 'Listar todos os generos'
+    })
+    findAll(): Promise<Gender[]> {
         return this.genderService.findAll();
         
     }
 
+    @Get()
+    @ApiOperation({
+        summary: 'Visualizar um genero'
+    })
+    findOne(@Param('id') id: string): Promise<Gender> {
+        return this.genderService.findOne(id)
+    }
+
     @Post()
-    create(@Body() dto: CreateGenderDto) {
+    @ApiOperation({
+        summary: 'Criar um genero'
+    })
+    create(@Body() dto: CreateGenderDto): Promise<Gender> {
         return this.genderService.create(dto);
 
     }

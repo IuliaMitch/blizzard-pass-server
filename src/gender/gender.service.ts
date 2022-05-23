@@ -14,12 +14,20 @@ export class GenderService {
 
     constructor(private readonly prisma: PrismaService) {}
 
-    findAll() {
+    findAll(): Promise<Gender[]> {
 
         return this.prisma.gender.findMany();
     }
 
-    create(dto: CreateGenderDto) {
+    findOne(id: string): Promise<Gender> {
+        return this.prisma.gender.findUnique({
+            where: {
+                id,
+            },
+        });
+    }
+
+    create(dto: CreateGenderDto): Promise<Gender> {
         const data: Gender = { ...dto }
         
         

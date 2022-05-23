@@ -19,7 +19,7 @@ model Games {
   title              String   @unique
   description        String
   year               Int
-  imdbScore          Int
+  imdbScore          Float
   trailerYoutubeUrl  String
   gameplayYoutubeUrl String
   coverImageUrl      String

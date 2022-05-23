@@ -1,5 +1,5 @@
 import { ApiOperation, ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsString } from "class-validator";
+import { IsNumber, IsPositive, IsString, Max, Min } from "class-validator";
 
 export class CreateGameDto {
   @IsString()
@@ -18,6 +18,7 @@ export class CreateGameDto {
 
   description: string;
 
+  @IsPositive()
   @IsNumber()
   @ApiProperty({
     description: 'Ano em que foi lançado',
@@ -25,10 +26,11 @@ export class CreateGameDto {
   })
   year: number;
 
+  @IsPositive()
   @IsNumber()
   @ApiProperty({
     description: 'Pontuação do Game secundo IMB',
-    example: 5
+    example: 3.5
   })
   imdbScore: number;
 

@@ -2,9 +2,10 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateGenderDto } from './dto/create-gender.dto';
+import { UpdateGenderDto } from './dto/update-gender.dto';
 import { Gender } from './entities/gender.entity';
 import { GenderService } from './gender.service';
 
@@ -22,7 +23,7 @@ export class GenderController {
         
     }
 
-    @Get()
+    @Get(':id')
     @ApiOperation({
         summary: 'Visualizar um genero'
     })
@@ -37,6 +38,14 @@ export class GenderController {
     create(@Body() dto: CreateGenderDto): Promise<Gender> {
         return this.genderService.create(dto);
 
+    }
+
+    @Patch(':id')
+    @ApiOperation({
+        summary: 'Editar um genero por ID'
+    })
+    update(@Param('id') id: string, @Body() dto: UpdateGenderDto): Promise<Gender> {
+        return this.genderService.update(id, dto)
     }
 
 }

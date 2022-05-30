@@ -6,6 +6,15 @@ import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
+  private userSelect = {
+    id: true,
+    name: true,
+    nickname: true,
+    email: true,
+    password: false,
+    cpf: true,
+    isAdmin: false,
+  }
 
   constructor(private readonly prisma: PrismaService) {}
 

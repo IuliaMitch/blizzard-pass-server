@@ -1,9 +1,11 @@
 export class User {
     id?: string
     name: string
+    nickname: string
     email: string 
     password: string
-    cpf: number
+    cpf: string
     isAdmin: boolean
-  
+    createdAt?: Date;
+    updatedAt?: Date;
 }

@@ -14,6 +14,7 @@ model Gender {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("gender")
+  profiles Profile[]
 }
 
 model Games {
@@ -29,6 +30,7 @@ model Games {
   updatedAt          DateTime @updatedAt @map("updated_at")
 
   @@map("games")
+  profiles Profile[]
 }
 
 model User {
@@ -44,4 +46,25 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("user")
+  profiles Profile[]
+}
+
+model Profile {
+  id String @id @default(uuid())
+
+
+  title String
+  imageUrl String
+  user User @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  gender Gender @relation(fields: [gendersId], references: [id])
+
+  gendersId String @map("genders_id")
+  games Games[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("profile")
 }

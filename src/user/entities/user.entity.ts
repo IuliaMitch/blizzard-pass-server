@@ -3,7 +3,7 @@ export class User {
     name: string
     email: string 
     password: string
-    cpf?: number
+    cpf: number
     isAdmin: boolean
   
 }

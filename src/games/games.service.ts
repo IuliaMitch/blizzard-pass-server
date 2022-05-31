@@ -3,6 +3,7 @@ import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Game } from './entities/game.entity';
+import { handleError } from 'utils/handle-error.util';
 
 @Injectable()
 export class GamesService {
@@ -27,7 +28,7 @@ export class GamesService {
 
     const data: Game = { ...dto };
     console.log(data)
-    return this.prisma.games.create({ data }).catch(this.handleError);
+    return this.prisma.games.create({ data }).catch(handleError);
   }
 
   findAll(): Promise<Game[]> {
@@ -47,7 +48,7 @@ export class GamesService {
         id,
       },
       data,
-    }).catch(this.handleError);
+    }).catch(handleError);
   }
 
   async delete(id: string) {

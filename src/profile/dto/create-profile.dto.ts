@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString, IsUrl, IsUUID } from "class-validator";
+import { createProfileGamesDto } from "./create-profile-games.dto";
 
 export class CreateProfileDto {
   @IsString()
@@ -19,21 +20,21 @@ export class CreateProfileDto {
   @IsUUID()
   @ApiProperty({
     description: 'Id do usuário',
-    example: ''
+    example: '686a8b34-259a-438d-b710-ad7eeb9994eb'
   })
   userId: string;
 
   @IsUUID()
   @ApiProperty({
     description: 'Gênero do jogo',
-    example: ''
+    example: '34383012-5efb-4365-abb7-bf312c21cf1a'
   })
-  genderName: string;
+  genderId: string;
 
   @IsUUID(undefined, {each: true})
   @ApiProperty({
     description: 'Jogos',
-    example: '',
+    example: '76e27454-c3c4-4cc8-a15c-efa7540ef0e2',
   })
-  games: string[]
+  games: createProfileGamesDto[]
 }

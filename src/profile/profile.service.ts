@@ -1,16 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { handleError } from 'utils/handle-error.util';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { Profile } from './entities/profile.entity';
 
 @Injectable()
 export class ProfileService {
 
   constructor(private readonly prisma: PrismaService) {}
+  async findById(id: string): Promise<Profile> {
+    const record = await this.prisma.profile.findUnique({
+      where: {id},
+      include: {
+        user: {
+          select: {
 
-  create(createProfileDto: CreateProfileDto) {
+          }
+        }
+      }
+    })
+
+    if (!record) {
+      throw new NotFoundException("Registro com o Id '${id}' não encontrado.");
+    }
+
+    return record;
+  }
+
+  async create(createProfileDto: CreateProfileDto) {
     const data: Prisma.ProfileCreateInput = {
       user: {
         connect: {
@@ -114,8 +133,18 @@ export class ProfileService {
 
   update(id: string, updateProfileDto: UpdateProfileDto) {
     const data: Prisma.ProfileUpdateInput = {
+      title: updateProfileDto.title,
+      imageUrl: updateProfileDto.imageUrl,
+      games: {
+        connect: {
 
+        }
+      }
     };
+    return this.prisma.profile.update({
+      where: {id},
+      data,
+    })
   }
 
   delete(id: string) {

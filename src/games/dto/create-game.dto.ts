@@ -57,4 +57,6 @@ export class CreateGameDto {
     example: "https://upload.wikimedia.org/wikipedia/pt/1/12/DiabloIIIcover.jpg"
   })
   coverImageUrl: string;
+
+  genreGame?: string;
 }

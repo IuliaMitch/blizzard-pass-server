@@ -4,6 +4,7 @@ import { UpdateGameDto } from './dto/update-game.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Game } from './entities/game.entity';
 import { handleError } from 'utils/handle-error.util';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class GamesService {
@@ -13,10 +14,19 @@ export class GamesService {
 
   async findById(id: string): Promise<Game> {
     const record = await this.prisma.games.findUnique({
-      where: {
-        id,
-      },
-    });
+      where: { id },
+      include: {
+        genders: {
+          select: {
+            genders: {
+              select: {
+                name: true,
+              }
+            }
+          }
+        }
+      }
+     });
 
     if (!record) {
       throw new NotFoundException(`Registro com o ID '${id}' não encontrado`);
@@ -25,14 +35,50 @@ export class GamesService {
   }
 
   async create(dto: CreateGameDto): Promise<Game> {
+    const data: Prisma.GamesCreateInput = {
+      title: dto.title,
+      coverImageUrl: dto.coverImageUrl,
+      year: dto.year,
+      description: dto.description,
+      imdbScore: dto.imdbScore,
+      gameplayYoutubeUrl: dto.gameplayYoutubeUrl,
+      trailerYoutubeUrl: dto.trailerYoutubeUrl,
+      genders: {
+        connect: {
 
-    const data: Game = { ...dto };
-    console.log(data)
-    return this.prisma.games.create({ data }).catch(handleError);
+        }
+      }
+    };
+    return await this.prisma.games.create({
+      data,
+      include: {
+        genders: true
+      }
+     }).catch(handleError);
   }
 
   findAll(): Promise<Game[]> {
-    return this.prisma.games.findMany();
+    return this.prisma.games.findMany({
+      select: {
+        id: true,
+        title: true,
+        coverImageUrl: true,
+        description: true,
+        year: true,
+        imdbScore: true,
+        trailerYoutubeUrl: true,
+        gameplayYoutubeUrl: true,
+        genders: {
+          select: {
+            genders: {
+              select: {
+                name: true
+              }
+            }
+          }
+        }
+      }
+    });
   }
 
   async findOne(id: string): Promise<Game> {
@@ -42,12 +88,31 @@ export class GamesService {
 
   async update(id: string, dto: UpdateGameDto): Promise<Game> {
     await this.findById(id)
-    const data: Partial<Game> = { ...dto };
+    const data: Prisma.GamesUpdateInput = {
+      title: dto.title,
+      coverImageUrl: dto.coverImageUrl,
+      description: dto.description,
+      gameplayYoutubeUrl: dto.gameplayYoutubeUrl,
+      year: dto.year,
+      imdbScore: dto.imdbScore,
+      trailerYoutubeUrl: dto.trailerYoutubeUrl,
+      genders: {
+        disconnect: {
+
+        },
+        connect: {
+
+        }
+      }
+     };
     return this.prisma.games.update({
       where: {
         id,
       },
       data,
+      include: {
+        genders: true
+      }
     }).catch(handleError);
   }
 

@@ -1,5 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsPositive, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsString, ValidateNested } from "class-validator";
+import { CreateGenderGamesDto } from "./create-gender-games.dto";
 
 export class CreateGenderDto {
   @IsString()
@@ -9,4 +11,13 @@ export class CreateGenderDto {
 
   })
     name: string;
+    @ValidateNested({
+      each: true
+    })
+    @Type(() => CreateGenderGamesDto)
+    @ApiProperty({
+      description: 'Jogo por gênero',
+      type: [CreateGenderGamesDto]
+    })
+    games?: CreateGenderGamesDto[];
   }

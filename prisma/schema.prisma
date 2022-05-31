@@ -14,7 +14,7 @@ model Gender {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("gender")
-   game GendersGames[]
+   gamesGender GendersGames[]
    profiles Profile[]
 }
 

@@ -30,8 +30,8 @@ model Games {
   updatedAt          DateTime @updatedAt @map("updated_at")
 
   @@map("games")
-  game GendersGames[]
-  games ProfileGames[]
+  genders GendersGames[]
+  profiles ProfileGames[]
 }
 
 model User {
@@ -60,7 +60,7 @@ model Profile {
   userId String @map("user_id")
 
 
-   profiles ProfileGames[]
+  games ProfileGames[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -72,8 +72,8 @@ model GendersGames {
   id String @id @default(uuid())
   genders Gender @relation(fields: [gendersId], references: [id])
   gendersId String
-  game Games @relation(fields: [gameId], references: [id])
-  gameId String
+  games Games @relation(fields: [gamesId], references: [id])
+  gamesId String
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
 }

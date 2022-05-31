@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { handleError } from 'utils/handle-error.util';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 
@@ -17,18 +18,63 @@ export class ProfileService {
         }
       },
       title: createProfileDto.title,
-      imageUrl: createProfileDto.imageUrl
+      imageUrl: createProfileDto.imageUrl,
+      games: {
+        createMany: {
+          data: createProfileDto.games.map((createProfileDto) => ({
+            gamesId: createProfileDto.gamesId,
+          })),
+        },
+      },
     }
+    return this.prisma.profile
+      .create({
+        data,
+        select: {
+          id: true,
+          title: true,
+          imageUrl: true,
+          user: {
+            select: {
+              name: true,
+            },
+          },
+          games: {
+            select: {
+              games: true,
+            },
+          },
+        },
+      })
+      .catch(handleError);
 
 
   }
 
   findAll() {
-    return `This action returns all profile`;
+    return this.prisma.profile.findMany({
+      select: {
+        id: true,
+        title: true,
+        imageUrl: true,
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        games: {
+          select: {
+            games: true,
+          },
+        },
+      },
+    });
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} profile`;
+    return this.prisma.profile.findUnique({
+      where: {id},
+    });
   }
 
   update(id: string, updateProfileDto: UpdateProfileDto) {

@@ -19,6 +19,11 @@ export class ProfileService {
       },
       title: createProfileDto.title,
       imageUrl: createProfileDto.imageUrl,
+      genders: {
+        connect: {
+          name: createProfileDto.genderName
+        }
+      },
       games: {
         createMany: {
           data: createProfileDto.games.map((createProfileDto) => ({
@@ -26,6 +31,7 @@ export class ProfileService {
           })),
         },
       },
+      
     }
     return this.prisma.profile
       .create({

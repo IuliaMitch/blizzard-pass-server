@@ -15,6 +15,7 @@ model Gender {
 
   @@map("gender")
    game GendersGames[]
+   profiles Profile[]
 }
 
 model Games {
@@ -59,6 +60,8 @@ model Profile {
   user User @relation(fields: [userId], references: [id])
   userId String @map("user_id")
 
+  genders Gender @relation(fields: [gendersId], references: [id])
+  gendersId String @map("genders_id")
 
   games ProfileGames[]
 

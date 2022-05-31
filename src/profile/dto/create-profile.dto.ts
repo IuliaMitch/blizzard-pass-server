@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsUrl, IsUUID } from "class-validator";
+import { Type } from "class-transformer";
+import { IsString, IsUrl, IsUUID, ValidateNested } from "class-validator";
 import { createProfileGamesDto } from "./create-profile-games.dto";
 
 export class CreateProfileDto {
@@ -24,17 +25,20 @@ export class CreateProfileDto {
   })
   userId: string;
 
-  @IsUUID()
+ 
   @ApiProperty({
     description: 'Gênero do jogo',
-    example: '34383012-5efb-4365-abb7-bf312c21cf1a'
+    example: 'MMORPG'
   })
-  genderId: string;
+  genderName: string;
 
-  @IsUUID(undefined, {each: true})
+  @ValidateNested({
+    each: true
+  })
+  @Type(() => createProfileGamesDto)
   @ApiProperty({
-    description: 'Jogos',
-    example: '76e27454-c3c4-4cc8-a15c-efa7540ef0e2',
+    description: 'Jogo Escolhido',
+    type: [createProfileGamesDto]
   })
   games: createProfileGamesDto[]
 }

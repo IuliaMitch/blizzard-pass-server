@@ -45,7 +45,7 @@ export class GamesService {
       trailerYoutubeUrl: dto.trailerYoutubeUrl,
       genders: {
         connect: {
-
+          id: dto.genreGame
         }
       }
     };
@@ -87,7 +87,7 @@ export class GamesService {
   }
 
   async update(id: string, dto: UpdateGameDto): Promise<Game> {
-    await this.findById(id)
+    const actualGame = await this.findById(id)
     const data: Prisma.GamesUpdateInput = {
       title: dto.title,
       coverImageUrl: dto.coverImageUrl,
@@ -98,10 +98,11 @@ export class GamesService {
       trailerYoutubeUrl: dto.trailerYoutubeUrl,
       genders: {
         disconnect: {
-
+          id: actualGame.gender[0].id
         },
         connect: {
-
+          id: dto.genreGame
+          
         }
       }
      };

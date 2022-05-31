@@ -37,8 +37,8 @@ export class CreateProfileDto {
   })
   @Type(() => createProfileGamesDto)
   @ApiProperty({
-    description: 'Jogo Escolhido',
-    type: [createProfileGamesDto]
+    description: 'Id do jogo a ser adicionado no perfil',
+    example: 'fbe611b7-34b1-4739-8b9e-418765b69942',
   })
-  games: createProfileGamesDto[]
+  gamesId: string
 }

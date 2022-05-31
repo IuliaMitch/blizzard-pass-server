@@ -10,6 +10,7 @@ import { Profile } from './entities/profile.entity';
 export class ProfileService {
 
   constructor(private readonly prisma: PrismaService) {}
+
   async findById(id: string): Promise<Profile> {
     const record = await this.prisma.profile.findUnique({
       where: {id},
@@ -44,16 +45,14 @@ export class ProfileService {
         }
       },
       games: {
-        createMany: {
-          data: createProfileDto.games.map((createProfileDto) => ({
-            gamesId: createProfileDto.gamesId,
-          })),
+          connect: {
+            id: createProfileDto.gamesId
+          }
         },
-      },
+      }
       
-    }
-    return this.prisma.profile
-      .create({
+    
+    return this.prisma.profile.create({
         data,
         select: {
           id: true,
@@ -103,40 +102,26 @@ export class ProfileService {
   }
 
   findOne(id: string) {
-    return this.prisma.profile.findUnique({
-      where: { id },
-      include: {
-        user: {
-          select: {
-            name: true,
-            nickname: true,
-          },
-        },
-        games: {
-          select: {
-            games: {
-              select: {
-                title: true,
-                coverImageUrl: true,
-                description: true,
-                year: true,
-                imdbScore: true,
-                trailerYoutubeUrl: true,
-                gameplayYoutubeUrl: true,
-              },
-            },
-          },
-        },
-      },
-    });
+    return this.findById(id);
   }
 
   update(id: string, updateProfileDto: UpdateProfileDto) {
     const data: Prisma.ProfileUpdateInput = {
       title: updateProfileDto.title,
       imageUrl: updateProfileDto.imageUrl,
+      user: {
+        connect: {
+          id: updateProfileDto.userId
+        }
+      },
       games: {
         connect: {
+          id: updateProfileDto.gamesId
+        }
+      },
+      genders: {
+        connect: {
+          name: updateProfileDto.genderName
 
         }
       }
@@ -147,7 +132,8 @@ export class ProfileService {
     })
   }
 
-  delete(id: string) {
-    return `This action removes a #${id} profile`;
+  async delete(id: string) {
+    await this.findById(id)
+    return this.prisma.profile.delete({where: {id}});
   }
 }

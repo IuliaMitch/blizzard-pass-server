@@ -10,9 +10,10 @@ import { GamesController } from './games/games.controller';
 import { GamesService } from './games/games.service';
 import { UserModule } from './user/user.module';
 import { ProfileModule } from './profile/profile.module';
+import { FavoritesModule } from './favorites/favorites.module';
 
 @Module({
-  imports: [GenderModule, PrismaModule, GamesModule, UserModule, ProfileModule],
+  imports: [GenderModule, PrismaModule, GamesModule, UserModule, ProfileModule, FavoritesModule],
   controllers: [AppController, GenderController, GamesController],
   providers: [AppService, GenderService, GamesService],
 })

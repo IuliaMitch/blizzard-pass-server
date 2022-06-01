@@ -18,11 +18,7 @@ export class GamesService {
       include: {
         genders: {
           select: {
-            genders: {
-              select: {
-                name: true,
-              }
-            }
+            name: true,
           }
         }
       }
@@ -70,11 +66,7 @@ export class GamesService {
         gameplayYoutubeUrl: true,
         genders: {
           select: {
-            genders: {
-              select: {
-                name: true
-              }
-            }
+            name: true,
           }
         }
       }

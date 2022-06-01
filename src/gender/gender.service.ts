@@ -45,10 +45,8 @@ export class GenderService {
     const data: Prisma.GenderCreateInput = {
       name: dto.name,
       gamesGender: {
-        createMany: {
-          data: dto.games?.map((dto) => ({
-            gamesId: dto.gamesId
-          }))
+        connect: {
+          title: dto.name
         }
       }
      };

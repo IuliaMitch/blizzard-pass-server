@@ -36,6 +36,14 @@ export class CreateUserDto {
 
     @IsString()
     @ApiProperty({
+        description: 'A confirmação da senha deve ser igual a senha',
+        example: 'im54452323@',
+
+    })
+    confirmPassword: string;
+
+    @IsString()
+    @ApiProperty({
         description: 'CPF do usuário'
     })
     cpf: string
